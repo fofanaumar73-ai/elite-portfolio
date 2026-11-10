@@ -1047,6 +1047,60 @@ img {max-width:100%;display:block}
     transition-duration:.01ms!important;
   }
 }
+
+  
+.hero-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 20px;
+  color: #ff3038;
+  font: 700 12px 'Space Grotesk', sans-serif;
+  letter-spacing: 4px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  background: #ff3038;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #ff3038;
+  animation: statusPulse 1.8s infinite;
+}
+
+@keyframes statusPulse {
+  50% {
+    opacity: .4;
+    box-shadow: 0 0 25px #ff3038;
+  }
+}
+
+.hero-description {
+  max-width: 490px;
+  color: #aaa;
+  font: 400 15px/2 'Manrope', sans-serif;
+  letter-spacing: .1px;
+}
+
+.hero-description span {
+  color: #fff;
+  font-weight: 800;
+}
+
+@media(max-width: 900px) {
+  .hero-subtitle {
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .hero-description {
+    font-size: 13px;
+    line-height: 1.9;
+    margin: auto;
+  }
+}
+
 </style>
 </head>
 
@@ -1108,14 +1162,21 @@ img {max-width:100%;display:block}
         <span>DEVELOPER</span>
       </h1>
 
-      <div class="hero-subtitle reveal">FULL-STACK DEVELOPER</div>
+      
+<div class="hero-subtitle reveal">
+  <span class="status-dot"></span>
+  FULL-STACK DEVELOPER
+</div>
 
-      <p class="hero-description reveal">
-        Your business deserves more than just a website.
-        I build powerful digital experiences that combine
-        thoughtful design, modern technology and functionality
-        to help businesses move forward.
-      </p>
+<p class="hero-description reveal">
+  I transform ambitious ideas into
+  <span>powerful digital experiences.</span>
+  From high-converting business websites to
+  custom web applications, I combine creative
+  design and modern engineering to help brands
+  stand out, build trust and grow online.
+</p>
+
 
       <div class="hero-buttons reveal">
         <a href="#contact" class="btn btn-primary magnetic">
