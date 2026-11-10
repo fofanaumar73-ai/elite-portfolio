@@ -1,0 +1,2332 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="Fofana is a Full-Stack Developer building powerful digital experiences, modern business websites and custom web solutions.">
+<meta name="author" content="Fofana">
+<title>Fofana — Full-Stack Developer | Digital Experiences</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root {
+  --bg:#080808;
+  --surface:#111111;
+  --surface2:#171717;
+  --red:#ff3038;
+  --red2:#bd101c;
+  --white:#f5f5f5;
+  --muted:#929292;
+  --line:rgba(255,255,255,.10);
+  --font:'Space Grotesk',sans-serif;
+  --body:'Manrope',sans-serif;
+  --display:'Bebas Neue',sans-serif;
+  --container:1240px;
+}
+
+* {margin:0;padding:0;box-sizing:border-box}
+html {scroll-behavior:smooth;scroll-padding-top:100px}
+body {
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--body);
+  overflow-x:hidden;
+  cursor:none;
+}
+body.loading {overflow:hidden}
+a {text-decoration:none;color:inherit}
+button {font:inherit;color:inherit}
+img {max-width:100%;display:block}
+::selection {background:var(--red);color:white}
+
+.container {
+  width:min(92%,var(--container));
+  margin:auto;
+}
+.section {padding:125px 0;position:relative}
+.section-label {
+  color:var(--red);
+  font:600 11px var(--font);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:24px;
+}
+.section-label:before {
+  content:"";
+  width:27px;height:1px;background:var(--red);
+}
+.section-title {
+  font:700 clamp(42px,7vw,85px)/.98 var(--font);
+  letter-spacing:-4px;
+  max-width:850px;
+}
+.section-title span {color:var(--red)}
+.section-desc {
+  color:var(--muted);
+  line-height:1.9;
+  font-size:14px;
+  max-width:570px;
+  margin-top:22px;
+}
+.red-text {color:var(--red)}
+.muted {color:var(--muted)}
+
+/* PRELOADER */
+#preloader {
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#070707;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:28px;
+}
+.loader-orb {
+  width:90px;height:90px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%,#fff 0%,#bcbcbc 5%,transparent 20%),
+    radial-gradient(circle at 65% 70%,#ff3038 0%,#6f1015 22%,transparent 48%),
+    linear-gradient(135deg,#eee,#555,#161616,#ff3038);
+  box-shadow:0 0 70px #ff303844,inset -15px -15px 30px #000;
+  animation:loaderFloat 2s ease-in-out infinite alternate;
+}
+.loader-name {
+  font:700 17px var(--font);
+  letter-spacing:9px;
+}
+.loader-progress {
+  width:180px;height:2px;background:#222;
+  overflow:hidden;
+}
+.loader-progress span {
+  display:block;width:0;height:100%;
+  background:var(--red);
+}
+.loader-number {
+  font:12px var(--font);
+  color:#888;letter-spacing:3px;
+}
+@keyframes loaderFloat {
+  to {transform:translateY(-12px) rotate(20deg) scale(1.08)}
+}
+
+/* CURSOR */
+.cursor-dot {
+  position:fixed;
+  z-index:10001;
+  top:0;left:0;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--red);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+.cursor-ring {
+  position:fixed;
+  z-index:10000;
+  top:0;left:0;
+  width:34px;height:34px;
+  border:1px solid #ff5961;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,background .25s;
+}
+.cursor-ring.active {
+  width:65px;height:65px;
+  background:#ff303822;
+  border-color:var(--red);
+}
+.cursor-bubble {
+  position:fixed;
+  width:var(--size,12px);
+  height:var(--size,12px);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  background:radial-gradient(circle at 30% 25%,#fff 0%,#ff767b 15%,#ff3038 50%,#800c14 100%);
+  box-shadow:0 0 15px #ff303855,inset -3px -3px 5px #53050a;
+  animation:bubblePop .7s ease-out forwards;
+}
+@keyframes bubblePop {
+  0% {opacity:.9;transform:scale(.3)}
+  40% {opacity:.8;transform:scale(1.2)}
+  100% {opacity:0;transform:scale(.1) translateY(-30px)}
+}
+@media(pointer:coarse) {
+  body {cursor:auto}
+  .cursor-dot,.cursor-ring {display:none}
+}
+
+/* NAVIGATION */
+.nav {
+  position:fixed;
+  z-index:1000;
+  top:0;left:0;width:100%;
+  padding:23px 0;
+  transition:.4s;
+}
+.nav.scrolled {
+  background:rgba(8,8,8,.82);
+  backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--line);
+  padding:15px 0;
+}
+.nav-inner {
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo {
+  font:700 27px var(--font);
+  letter-spacing:-2px;
+}
+.logo span {color:var(--red)}
+.nav-links {
+  display:flex;align-items:center;gap:34px;
+}
+.nav-links a {
+  color:#bbb;
+  font:600 11px var(--font);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:.3s;
+}
+.nav-links a:hover {color:var(--red)}
+.nav-cta {
+  background:var(--red);
+  padding:13px 21px;
+  border-radius:3px;
+  font:700 10px var(--font);
+  letter-spacing:1px;
+  transition:.3s;
+}
+.nav-cta:hover {
+  background:white;color:black;
+  transform:translateY(-3px);
+}
+.menu-toggle {
+  display:none;
+  border:0;background:none;
+  font-size:27px;cursor:pointer;
+}
+
+/* HERO */
+.hero {
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  padding:140px 0 90px;
+  background:
+    radial-gradient(ellipse at 75% 50%,#320b0e44,transparent 45%),
+    #080808;
+}
+.hero-grid {
+  position:absolute;inset:0;
+  opacity:.12;
+  background-image:
+    linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
+  background-size:70px 70px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+.hero-inner {
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  align-items:center;
+  gap:20px;
+}
+.hero-kicker {
+  color:var(--red);
+  font:600 11px var(--font);
+  letter-spacing:4px;
+  margin-bottom:30px;
+}
+.hero h1 {
+  font:700 clamp(65px,10vw,135px)/.82 var(--font);
+  letter-spacing:-8px;
+  text-transform:uppercase;
+}
+.hero h1 span {
+  display:block;color:transparent;
+  -webkit-text-stroke:1px #f5f5f5;
+}
+.hero-subtitle {
+  margin:30px 0 15px;
+  color:#ccc;
+  font:600 13px var(--font);
+  letter-spacing:4px;
+}
+.hero-description {
+  color:var(--muted);
+  max-width:480px;
+  font-size:14px;
+  line-height:1.9;
+}
+.hero-buttons {
+  display:flex;gap:15px;flex-wrap:wrap;
+  margin-top:35px;
+}
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:13px;
+  padding:17px 25px;
+  font:700 11px var(--font);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  border:1px solid var(--line);
+  transition:.3s;
+}
+.btn-primary {
+  background:var(--red);
+  border-color:var(--red);
+}
+.btn-primary:hover {
+  background:white;color:black;
+  transform:translateY(-5px);
+  box-shadow:0 15px 40px #ff303833;
+}
+.btn-outline:hover {
+  border-color:var(--red);
+  color:var(--red);
+  transform:translateY(-5px);
+}
+.btn-arrow {font-size:17px}
+
+/* LIQUID CHROME OBJECT */
+.hero-visual {
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:480px;
+  perspective:1000px;
+}
+.orbital {
+  position:absolute;
+  width:420px;height:420px;
+  border:1px solid #ff30382c;
+  border-radius:50%;
+  transform:rotateX(65deg);
+  animation:orbit 12s linear infinite;
+}
+.orbital:after {
+  content:"";position:absolute;
+  width:8px;height:8px;
+  background:var(--red);
+  border-radius:50%;
+  top:10%;left:20%;
+  box-shadow:0 0 20px var(--red);
+}
+.orbital.two {
+  width:340px;height:340px;
+  animation-duration:9s;
+  animation-direction:reverse;
+  transform:rotateX(65deg) rotateY(45deg);
+}
+@keyframes orbit {to {transform:rotateX(65deg) rotateZ(360deg)}}
+
+.liquid-orb {
+  width:min(340px,75vw);
+  aspect-ratio:1;
+  border-radius:44% 56% 55% 45% / 45% 42% 58% 55%;
+  position:relative;
+  background:
+    radial-gradient(ellipse at 25% 20%,#fff 0%,#dedede 2%,transparent 16%),
+    radial-gradient(ellipse at 65% 28%,#ff7d82 0%,#c51b27 8%,transparent 28%),
+    radial-gradient(ellipse at 30% 75%,#f7f7f7 0%,#777 9%,transparent 28%),
+    radial-gradient(ellipse at 70% 70%,#b30b17 0%,#370509 30%,transparent 52%),
+    linear-gradient(135deg,#f5f5f5,#777,#181818,#ad111c,#303030);
+  box-shadow:
+    inset -35px -40px 65px #000,
+    inset 18px 15px 35px #ffffff66,
+    0 0 80px #ff303833;
+  filter:contrast(1.15) saturate(1.2);
+  animation:liquidMorph 9s ease-in-out infinite alternate,
+            orbFloat 5s ease-in-out infinite;
+  transition:transform .2s ease-out;
+}
+.liquid-orb:before {
+  content:"";
+  position:absolute;inset:8%;
+  border-radius:50%;
+  border:2px solid #ffffff35;
+  filter:blur(1px);
+  transform:rotate(30deg) scale(.8,1.1);
+}
+.liquid-orb:after {
+  content:"";
+  position:absolute;
+  top:14%;left:20%;
+  width:28%;height:12%;
+  border-radius:50%;
+  background:#fff;
+  filter:blur(13px);
+  opacity:.7;
+  transform:rotate(-30deg);
+}
+@keyframes liquidMorph {
+  0% {border-radius:44% 56% 55% 45% / 45% 42% 58% 55%}
+  50% {border-radius:58% 42% 40% 60% / 52% 60% 40% 48%}
+  100% {border-radius:40% 60% 60% 40% / 60% 38% 62% 40%}
+}
+@keyframes orbFloat {
+  0%,100% {transform:translateY(0) rotate(0deg)}
+  50% {transform:translateY(-22px) rotate(12deg)}
+}
+.orb-bubble {
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,white,#ff626a 18%,#a20b15 60%,#180000);
+  box-shadow:0 0 25px #ff303855,inset -5px -5px 12px #000;
+  animation:bubbleFloat 5s ease-in-out infinite;
+}
+.orb-bubble.b1 {width:48px;height:48px;top:15%;right:8%}
+.orb-bubble.b2 {width:23px;height:23px;bottom:17%;left:12%;animation-delay:1s}
+.orb-bubble.b3 {width:15px;height:15px;top:24%;left:10%;animation-delay:2s}
+@keyframes bubbleFloat {
+  50% {transform:translate(15px,-25px) scale(1.15)}
+}
+.hero-side-label {
+  position:absolute;
+  right:0;bottom:20px;
+  writing-mode:vertical-rl;
+  color:#666;font:10px var(--font);
+  letter-spacing:4px;
+}
+.hero-bottom {
+  position:absolute;
+  bottom:35px;left:4%;
+  display:flex;align-items:center;gap:15px;
+  color:#777;font:10px var(--font);
+  letter-spacing:2px;
+}
+.scroll-line {
+  width:45px;height:1px;background:var(--red);
+  animation:scrollLine 2s infinite;
+}
+@keyframes scrollLine {
+  0% {transform:scaleX(0);transform-origin:left}
+  50% {transform:scaleX(1)}
+  100% {transform:scaleX(0);transform-origin:right}
+}
+
+/* MARQUEE */
+.marquee {
+  padding:23px 0;
+  overflow:hidden;
+  background:var(--red);
+  transform:rotate(-1deg) scale(1.02);
+}
+.marquee-track {
+  display:flex;width:max-content;
+  animation:marquee 28s linear infinite;
+}
+.marquee span {
+  font:700 24px var(--font);
+  color:white;
+  padding:0 35px;
+  white-space:nowrap;
+  letter-spacing:2px;
+}
+@keyframes marquee {to {transform:translateX(-50%)}}
+
+/* ABOUT */
+.about-grid {
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:90px;
+  align-items:center;
+}
+.about-visual {
+  position:relative;
+  min-height:430px;
+  background:
+    radial-gradient(circle at 50% 50%,#ff30382c,transparent 60%),
+    linear-gradient(145deg,#181818,#090909);
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.about-visual:before {
+  content:"FOFANA";
+  font:100px var(--display);
+  color:#ffffff08;
+  position:absolute;
+  transform:rotate(-90deg);
+}
+.about-symbol {
+  width:200px;height:200px;
+  border:1px solid #ff303877;
+  transform:rotate(45deg);
+  position:relative;
+  animation:symbolSpin 15s linear infinite;
+}
+.about-symbol:before,.about-symbol:after {
+  content:"";position:absolute;
+  inset:20px;border:1px solid #ff303866;
+}
+.about-symbol:after {
+  inset:45px;
+  background:radial-gradient(circle,#ff303855,transparent);
+}
+@keyframes symbolSpin {to {transform:rotate(405deg)}}
+.about-stamp {
+  position:absolute;bottom:20px;left:20px;
+  font:11px var(--font);letter-spacing:2px;color:#aaa;
+}
+.about-copy p {
+  color:var(--muted);
+  font-size:14px;line-height:2;
+  margin-top:22px;
+}
+.about-stats {
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:15px;margin-top:35px;
+}
+.stat {
+  padding:18px 12px;
+  border-top:1px solid var(--red);
+}
+.stat strong {
+  font:700 28px var(--font);
+  display:block;
+}
+.stat span {
+  font-size:9px;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+/* SKILLS */
+.skills-section {
+  background:linear-gradient(180deg,#0d0d0d,#080808);
+}
+.skills-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;margin-top:55px;
+}
+.skill-card {
+  background:linear-gradient(145deg,#181818,#0d0d0d);
+  border:1px solid var(--line);
+  padding:28px 23px;
+  min-height:220px;
+  position:relative;overflow:hidden;
+  transition:.4s;
+}
+.skill-card:after {
+  content:"";position:absolute;
+  width:130px;height:130px;
+  border-radius:50%;
+  background:#ff303814;
+  filter:blur(40px);
+  right:-60px;bottom:-60px;
+  transition:.4s;
+}
+.skill-card:hover {
+  border-color:#ff303877;
+  transform:translateY(-10px);
+}
+.skill-card:hover:after {background:#ff303855}
+.skill-number {
+  font:12px var(--font);color:var(--red);
+}
+.skill-icon {
+  font-size:27px;margin:22px 0;
+}
+.skill-card h3 {
+  font:600 17px var(--font);
+  margin-bottom:12px;
+}
+.skill-card p {
+  color:var(--muted);font-size:12px;line-height:1.8;
+}
+.tech-list {
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin-top:35px;
+}
+.tech-list span {
+  padding:11px 16px;
+  border:1px solid var(--line);
+  font:600 10px var(--font);
+  color:#bbb;letter-spacing:1px;
+  transition:.3s;
+}
+.tech-list span:hover {
+  border-color:var(--red);
+  color:var(--red);
+  transform:translateY(-4px);
+}
+
+/* PROJECTS */
+.projects-header {
+  display:flex;justify-content:space-between;
+  align-items:end;gap:25px;flex-wrap:wrap;
+}
+.project-list {margin-top:60px;display:grid;gap:35px}
+.project-card {
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  min-height:390px;
+  border:1px solid var(--line);
+  background:#101010;
+  overflow:hidden;
+  transition:.4s;
+}
+.project-card:nth-child(even) {grid-template-columns:.8fr 1.2fr}
+.project-card:nth-child(even) .project-image {order:2}
+.project-card:hover {border-color:#ff303866}
+.project-image {
+  min-height:350px;
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 40%,#ff303833,transparent 60%),
+    linear-gradient(145deg,#262626,#080808);
+  display:flex;align-items:center;justify-content:center;
+}
+.project-image img {
+  width:82%;height:75%;
+  object-fit:cover;
+  border-radius:5px;
+  box-shadow:0 25px 65px #000;
+  transition:transform .8s;
+}
+.project-card:hover .project-image img {transform:scale(1.06)}
+.project-placeholder {
+  text-align:center;
+  padding:35px;
+}
+.project-placeholder strong {
+  font:700 clamp(30px,5vw,60px) var(--font);
+  display:block;
+}
+.project-placeholder span {
+  color:var(--red);font-size:10px;
+  letter-spacing:3px;
+}
+.project-content {
+  padding:45px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+.project-index {
+  color:var(--red);
+  font:12px var(--font);letter-spacing:2px;
+}
+.project-content h3 {
+  font:700 clamp(25px,3vw,38px) var(--font);
+  margin:15px 0;
+}
+.project-content p {
+  color:var(--muted);
+  font-size:13px;line-height:1.9;
+}
+.project-tags {
+  display:flex;gap:8px;flex-wrap:wrap;margin:22px 0;
+}
+.project-tags span {
+  border:1px solid var(--line);
+  padding:7px 10px;
+  color:#aaa;font:10px var(--font);
+}
+.project-links {display:flex;gap:18px;flex-wrap:wrap}
+.project-links a {
+  font:700 10px var(--font);
+  color:var(--red);
+  letter-spacing:1px;
+}
+.project-links a:hover {color:white}
+.project-links .disabled-link {color:#777}
+
+/* SERVICES */
+.services-section {
+  background:#0c0c0c;
+}
+.services-grid {
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:14px;margin-top:55px;
+}
+.service {
+  position:relative;
+  padding:35px;
+  border:1px solid var(--line);
+  background:linear-gradient(140deg,#171717,#0c0c0c);
+  min-height:235px;
+  overflow:hidden;transition:.4s;
+}
+.service:hover {
+  border-color:var(--red);
+  transform:translateY(-6px);
+}
+.service-num {
+  color:var(--red);font:12px var(--font);
+}
+.service h3 {
+  font:600 25px var(--font);
+  margin:25px 0 13px;
+}
+.service p {
+  color:var(--muted);font-size:13px;line-height:1.8;
+  max-width:430px;
+}
+.service-arrow {
+  position:absolute;right:30px;top:28px;
+  color:#555;font-size:24px;
+  transition:.3s;
+}
+.service:hover .service-arrow {
+  color:var(--red);transform:translate(5px,-5px);
+}
+
+/* PROCESS */
+.process-grid {
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:12px;margin-top:55px;
+}
+.process-item {
+  border-top:1px solid #333;
+  padding:25px 10px 20px 0;
+  position:relative;
+}
+.process-item:before {
+  content:"";position:absolute;
+  top:-4px;left:0;
+  width:7px;height:7px;
+  background:var(--red);border-radius:50%;
+  box-shadow:0 0 15px var(--red);
+}
+.process-item span {
+  color:var(--red);font:12px var(--font);
+}
+.process-item h3 {
+  font:600 17px var(--font);
+  margin:17px 0 10px;
+}
+.process-item p {
+  color:var(--muted);font-size:11px;line-height:1.8;
+}
+
+/* TESTIMONIALS */
+.testimonial-section {
+  background:
+    radial-gradient(ellipse at 50% 100%,#3b0c1030,transparent 60%),
+    #0c0c0c;
+}
+.testimonial-shell {
+  max-width:850px;margin:55px auto 0;
+  border:1px solid var(--line);
+  background:linear-gradient(145deg,#191919,#0b0b0b);
+  padding:55px;
+  position:relative;
+  overflow:hidden;
+}
+.testimonial-shell:before {
+  content:"“";
+  position:absolute;top:0;right:30px;
+  color:#ff303819;
+  font:200px Georgia;
+}
+.testimonial {
+  display:none;
+  animation:reviewIn .6s ease both;
+}
+.testimonial.active {display:block}
+@keyframes reviewIn {
+  from {opacity:0;transform:translateY(20px)}
+  to {opacity:1;transform:translateY(0)}
+}
+.review-stars {
+  color:#ffb52e;
+  font-size:19px;letter-spacing:5px;
+  margin-bottom:30px;
+}
+.review-text {
+  font:500 clamp(19px,3vw,28px)/1.7 var(--font);
+  position:relative;z-index:1;
+}
+.review-person {
+  display:flex;align-items:center;gap:16px;
+  margin-top:35px;
+}
+.review-person img {
+  width:55px;height:55px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--red);
+}
+.review-person h4 {font:600 14px var(--font)}
+.review-person p {
+  font-size:10px;color:var(--muted);
+  margin-top:5px;
+}
+.review-controls {
+  display:flex;justify-content:space-between;
+  align-items:center;margin-top:35px;
+}
+.review-count {
+  font:12px var(--font);color:#999;
+  letter-spacing:2px;
+}
+.review-arrows {display:flex;gap:10px}
+.arrow-btn {
+  width:46px;height:46px;
+  border:1px solid #444;background:transparent;
+  font-size:20px;cursor:pointer;
+  transition:.3s;
+}
+.arrow-btn:hover {
+  background:var(--red);border-color:var(--red);
+}
+.review-dots {
+  display:flex;gap:7px;margin-top:20px;
+}
+.review-dot {
+  width:17px;height:3px;background:#444;
+  border:0;cursor:pointer;transition:.3s;
+}
+.review-dot.active {width:35px;background:var(--red)}
+.review-note {
+  color:#777;font-size:10px;
+  line-height:1.7;margin-top:22px;
+}
+
+/* FAQ */
+.faq-section {background:#080808}
+.faq-layout {
+  display:grid;grid-template-columns:.8fr 1.2fr;
+  gap:80px;align-items:center;margin-top:45px;
+}
+.faq-side h3 {
+  font:700 35px/1.2 var(--font);
+}
+.faq-side p {
+  color:var(--muted);font-size:13px;
+  line-height:1.9;margin-top:20px;
+}
+.faq-card {
+  border:1px solid var(--line);
+  padding:35px;background:#111;
+  min-height:260px;
+}
+.faq-counter {
+  color:var(--red);font:12px var(--font);
+  letter-spacing:2px;
+}
+.faq-question {
+  font:600 clamp(22px,3vw,31px)/1.3 var(--font);
+  margin:25px 0;
+}
+.faq-answer {
+  color:var(--muted);font-size:13px;line-height:2;
+  min-height:75px;
+}
+.faq-controls {
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-top:25px;padding-top:20px;
+  border-top:1px solid var(--line);
+}
+.faq-controls button {
+  background:none;border:0;
+  cursor:pointer;font:600 10px var(--font);
+  letter-spacing:1px;
+  transition:.3s;
+}
+.faq-controls button:hover {color:var(--red)}
+.faq-controls button:disabled {opacity:.25;cursor:not-allowed}
+
+/* CTA */
+.cta-section {
+  padding:120px 0;
+  background:
+    radial-gradient(ellipse at 50% 50%,#7b101833,transparent 60%),
+    #101010;
+  text-align:center;
+  overflow:hidden;
+}
+.cta-section h2 {
+  font:700 clamp(48px,8vw,100px)/.95 var(--font);
+  letter-spacing:-5px;
+  max-width:950px;margin:auto;
+}
+.cta-section h2 span {color:var(--red)}
+.cta-section p {
+  color:#aaa;font-size:14px;
+  max-width:530px;margin:25px auto 35px;
+  line-height:1.9;
+}
+
+/* FOOTER */
+.footer {
+  padding:75px 0 25px;
+  background:#050505;
+  border-top:1px solid var(--line);
+}
+.footer-top {
+  display:grid;grid-template-columns:1.2fr .8fr;
+  gap:50px;padding-bottom:55px;
+}
+.footer-brand h2 {
+  font:700 43px var(--font);
+  letter-spacing:-3px;
+}
+.footer-brand h2 span {color:var(--red)}
+.footer-brand p {
+  color:var(--muted);font-size:13px;
+  line-height:1.9;max-width:400px;margin-top:18px;
+}
+.footer-contact {
+  display:grid;gap:23px;
+}
+.footer-contact small {
+  color:#777;font:10px var(--font);
+  letter-spacing:2px;display:block;margin-bottom:8px;
+}
+.footer-contact a {
+  font:600 16px var(--font);
+  transition:.3s;overflow-wrap:anywhere;
+}
+.footer-contact a:hover {color:var(--red)}
+.footer-bottom {
+  border-top:1px solid var(--line);
+  padding-top:25px;
+  display:flex;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  color:#777;font-size:10px;
+}
+.footer-socials {display:flex;gap:20px}
+.footer-socials a:hover {color:var(--red)}
+
+/* WHATSAPP */
+.whatsapp-float {
+  position:fixed;
+  z-index:900;
+  bottom:25px;right:25px;
+  width:62px;height:62px;
+  border-radius:50%;
+  background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 8px #ff30381c,0 8px 35px #0009;
+  transition:.35s;
+  animation:whatsappPulse 3s infinite;
+}
+.whatsapp-float:hover {
+  transform:scale(1.12);
+  box-shadow:0 0 0 13px #ff303820,0 10px 40px #ff303844;
+}
+.whatsapp-float svg {width:31px;height:31px;fill:white}
+.whatsapp-tip {
+  position:absolute;right:75px;
+  white-space:nowrap;
+  background:#171717;
+  border:1px solid var(--line);
+  padding:12px 15px;
+  font:600 10px var(--font);
+  opacity:0;transform:translateX(10px);
+  transition:.3s;pointer-events:none;
+}
+.whatsapp-float:hover .whatsapp-tip {
+  opacity:1;transform:translateX(0);
+}
+@keyframes whatsappPulse {
+  0%,100% {box-shadow:0 0 0 8px #ff30381c,0 8px 35px #0009}
+  50% {box-shadow:0 0 0 13px #ff303800,0 8px 35px #0009}
+}
+
+/* REVEALS */
+.reveal {
+  opacity:0;
+  transform:translateY(35px);
+  transition:opacity .8s ease,transform .8s ease;
+}
+.reveal.visible {
+  opacity:1;transform:translateY(0);
+}
+
+/* MOBILE NAV */
+.mobile-menu {
+  position:fixed;inset:0;
+  z-index:999;
+  background:#080808f5;
+  backdrop-filter:blur(25px);
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  gap:25px;
+  opacity:0;visibility:hidden;
+  transition:.4s;
+}
+.mobile-menu.open {opacity:1;visibility:visible}
+.mobile-menu a {
+  font:700 32px var(--font);
+  transition:.3s;
+}
+.mobile-menu a:hover {color:var(--red)}
+.mobile-close {
+  position:absolute;top:25px;right:5%;
+  background:none;border:0;
+  font-size:35px;cursor:pointer;
+}
+
+@media(max-width:900px) {
+  .nav-links,.nav-cta {display:none}
+  .menu-toggle {display:block}
+  .hero-inner {grid-template-columns:1fr}
+  .hero-visual {min-height:380px;grid-row:1}
+  .hero-copy {text-align:center}
+  .hero-description {margin:auto}
+  .hero-buttons {justify-content:center}
+  .hero h1 {letter-spacing:-5px}
+  .about-grid {grid-template-columns:1fr;gap:45px}
+  .skills-grid {grid-template-columns:repeat(2,1fr)}
+  .project-card,.project-card:nth-child(even) {
+    grid-template-columns:1fr;
+  }
+  .project-card:nth-child(even) .project-image {order:0}
+  .project-image {min-height:280px}
+  .services-grid {grid-template-columns:1fr 1fr}
+  .process-grid {grid-template-columns:repeat(3,1fr)}
+  .faq-layout {grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:600px) {
+  .section {padding:85px 0}
+  .section-title {letter-spacing:-2px}
+  .hero {padding-top:110px;min-height:auto}
+  .hero-visual {min-height:310px}
+  .liquid-orb {width:230px}
+  .orbital {width:290px;height:290px}
+  .orbital.two {width:250px;height:250px}
+  .hero h1 {font-size:clamp(55px,16vw,85px);letter-spacing:-4px}
+  .hero-subtitle {font-size:10px;letter-spacing:2px}
+  .hero-description {font-size:12px}
+  .hero-bottom {display:none}
+  .about-visual {min-height:290px}
+  .about-stats {gap:8px}
+  .stat strong {font-size:22px}
+  .skills-grid {grid-template-columns:1fr 1fr}
+  .skill-card {padding:20px 14px;min-height:210px}
+  .skill-card h3 {font-size:15px}
+  .project-content {padding:27px 22px}
+  .project-image {min-height:230px}
+  .services-grid {grid-template-columns:1fr}
+  .service {min-height:205px;padding:27px}
+  .process-grid {grid-template-columns:1fr 1fr}
+  .testimonial-shell {padding:27px 21px}
+  .review-text {font-size:19px}
+  .review-person img {width:48px;height:48px}
+  .faq-card {padding:23px}
+  .cta-section {padding:85px 0}
+  .cta-section h2 {letter-spacing:-2px}
+  .footer-top {grid-template-columns:1fr;gap:35px}
+  .footer-bottom {flex-direction:column}
+  .whatsapp-float {width:55px;height:55px;bottom:18px;right:17px}
+  .whatsapp-tip {display:none}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body class="loading">
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="loader-orb"></div>
+  <div class="loader-name">FOFANA.</div>
+  <div class="loader-progress"><span id="loaderBar"></span></div>
+  <div class="loader-number"><span id="loaderNumber">00</span> / 100</div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose" aria-label="Close menu">×</button>
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#expertise">Expertise</a>
+  <a href="#projects">Projects</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- NAVIGATION -->
+<header class="nav" id="navbar">
+  <div class="container nav-inner">
+    <a href="#home" class="logo">FOFANA<span>.</span></a>
+
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#projects">Projects</a>
+      <a href="#services">Services</a>
+    </nav>
+
+    <a class="nav-cta" href="#contact">LET'S TALK ↗</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="container hero-inner">
+
+    <div class="hero-copy">
+      <div class="hero-kicker reveal">INDEPENDENT DEVELOPER / DIGITAL CREATOR</div>
+
+      <h1 class="reveal">
+        FOFANA
+        <span>DEVELOPER</span>
+      </h1>
+
+      <div class="hero-subtitle reveal">FULL-STACK DEVELOPER</div>
+
+      <p class="hero-description reveal">
+        Your business deserves more than just a website.
+        I build powerful digital experiences that combine
+        thoughtful design, modern technology and functionality
+        to help businesses move forward.
+      </p>
+
+      <div class="hero-buttons reveal">
+        <a href="#contact" class="btn btn-primary magnetic">
+          START A PROJECT <span class="btn-arrow">↗</span>
+        </a>
+        <a href="#projects" class="btn btn-outline magnetic">
+          EXPLORE MY WORK <span class="btn-arrow">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal" id="heroVisual">
+      <div class="orbital"></div>
+      <div class="orbital two"></div>
+      <div class="liquid-orb" id="liquidOrb"></div>
+      <div class="orb-bubble b1"></div>
+      <div class="orb-bubble b2"></div>
+      <div class="orb-bubble b3"></div>
+      <div class="hero-side-label">CREATIVITY MEETS ENGINEERING</div>
+    </div>
+
+  </div>
+
+  <div class="hero-bottom">
+    <span class="scroll-line"></span>
+    SCROLL TO EXPLORE
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>DESIGN WITH PURPOSE ✳</span>
+    <span>BUILD WITH PRECISION ✳</span>
+    <span>CREATE EXPERIENCES ✳</span>
+    <span>THINK BEYOND ORDINARY ✳</span>
+    <span>DESIGN WITH PURPOSE ✳</span>
+    <span>BUILD WITH PRECISION ✳</span>
+    <span>CREATE EXPERIENCES ✳</span>
+    <span>THINK BEYOND ORDINARY ✳</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="container about-grid">
+
+    <div class="about-visual reveal">
+      <div class="about-symbol"></div>
+      <div class="about-stamp">THE MIND BEHIND THE CODE — 001</div>
+    </div>
+
+    <div class="about-copy reveal">
+      <div class="section-label">01 / ABOUT ME</div>
+
+      <h2 class="section-title">
+        I DON'T JUST BUILD WEBSITES.
+        <span>I BUILD EXPERIENCES.</span>
+      </h2>
+
+      <p>
+        I'm Fofana, a Full-Stack Developer passionate about
+        transforming ideas into meaningful digital products.
+        I combine creative thinking, clean code and modern
+        web technologies to create websites that look exceptional
+        and work beautifully.
+      </p>
+
+      <p>
+        From business websites and e-commerce experiences to
+        custom web applications, I focus on building solutions
+        that serve real business needs, create strong first
+        impressions and make it easier for customers to take action.
+      </p>
+
+      <div class="about-stats">
+        <div class="stat">
+          <strong>01<span class="red-text">+</span></strong>
+          <span>Creative mindset</span>
+        </div>
+        <div class="stat">
+          <strong>100<span class="red-text">%</span></strong>
+          <span>Commitment</span>
+        </div>
+        <div class="stat">
+          <strong>∞</strong>
+          <span>Ideas to build</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section class="section skills-section" id="expertise">
+  <div class="container">
+
+    <div class="section-label reveal">02 / TECH ARSENAL</div>
+    <h2 class="section-title reveal">
+      THE TOOLS BEHIND <span>THE MAGIC.</span>
+    </h2>
+    <p class="section-desc reveal">
+      Technology is only powerful when it solves the right problem.
+      Here's the toolkit I use to turn ideas into functional
+      digital experiences.
+    </p>
+
+    <div class="skills-grid">
+
+      <article class="skill-card reveal">
+        <div class="skill-number">01 / FRONTEND</div>
+        <div class="skill-icon">◈</div>
+        <h3>Frontend Engineering</h3>
+        <p>Responsive interfaces, interactive experiences,
+        modern layouts and thoughtful user experiences.</p>
+      </article>
+
+      <article class="skill-card reveal">
+        <div class="skill-number">02 / BACKEND</div>
+        <div class="skill-icon">⌘</div>
+        <h3>Backend Development</h3>
+        <p>Application logic, authentication, integrations
+        and reliable functionality.</p>
+      </article>
+
+      <article class="skill-card reveal">
+        <div class="skill-number">03 / DATABASE</div>
+        <div class="skill-icon">◉</div>
+        <h3>Database & APIs</h3>
+        <p>Structured data, database integration, API
+        connections and application workflows.</p>
+      </article>
+
+      <article class="skill-card reveal">
+        <div class="skill-number">04 / COMMERCE</div>
+        <div class="skill-icon">◇</div>
+        <h3>E-commerce Solutions</h3>
+        <p>Online storefronts, product experiences,
+        shopping functionality and business websites.</p>
+      </article>
+
+    </div>
+
+    <div class="tech-list reveal">
+      <span>HTML5</span>
+      <span>CSS3</span>
+      <span>JAVASCRIPT</span>
+      <span>SUPABASE</span>
+      <span>GSAP</span>
+      <span>SHOPIFY</span>
+      <span>GIT</span>
+      <span>GITHUB</span>
+      <span>REST APIs</span>
+      <span>RESPONSIVE DESIGN</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="container">
+
+    <div class="projects-header">
+      <div>
+        <div class="section-label reveal">03 / SELECTED WORKS</div>
+        <h2 class="section-title reveal">
+          BUILT TO MAKE <span>AN IMPACT.</span>
+        </h2>
+      </div>
+      <p class="section-desc reveal">
+        A selection of digital experiences, experiments
+        and solutions that demonstrate my approach to
+        design and development.
+      </p>
+    </div>
+
+    <div class="project-list">
+
+      <!-- PROJECT 1 -->
+      <article class="project-card reveal">
+        <div class="project-image">
+          <div class="project-placeholder">
+            <span>BUSINESS CONSULTANCY</span>
+            <strong>WEALTH<br>THE SHAPER.</strong>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <div class="project-index">PROJECT / 001</div>
+          <h3>WealthTheShaper</h3>
+          <p>
+            A professional business consultancy platform
+            designed to communicate expertise, showcase
+            services and help brands discover business
+            growth and commercial strategy solutions.
+          </p>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span>
+            <span>JAVASCRIPT</span><span>SUPABASE</span>
+          </div>
+          <div class="project-links">
+            <a href="#contact">PROJECT DETAILS ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 2 -->
+      <article class="project-card reveal">
+        <div class="project-image">
+          <div class="project-placeholder">
+            <span>HVAC / CONTRACTOR WEBSITE</span>
+            <strong>OBSIDIAN<br>HVAC.</strong>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <div class="project-index">PROJECT / 002</div>
+          <h3>Obsidian HVAC</h3>
+          <p>
+            A modern HVAC contractor website concept
+            featuring a professional service presentation,
+            strong visual hierarchy and conversion-focused
+            contact experiences.
+          </p>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span>
+            <span>JAVASCRIPT</span><span>RESPONSIVE</span>
+          </div>
+          <div class="project-links">
+            <a href="https://fofanaumar73-ai.github.io/obsidian-hvac/"
+               target="_blank" rel="noopener noreferrer">
+              LIVE PREVIEW ↗
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 3 -->
+      <article class="project-card reveal">
+        <div class="project-image">
+          <div class="project-placeholder">
+            <span>REAL ESTATE</span>
+            <strong>PROPERTY<br>DISCOVERY.</strong>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <div class="project-index">PROJECT / 003</div>
+          <h3>Real Estate Website</h3>
+          <p>
+            A real estate website concept built to present
+            properties in an engaging way, improve browsing
+            experiences and help prospective buyers
+            discover property opportunities.
+          </p>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span>
+            <span>JAVASCRIPT</span><span>UI DESIGN</span>
+          </div>
+          <div class="project-links">
+            <a href="https://fofanaumar73-ai.github.io/Real-Estate/#home"
+               target="_blank" rel="noopener noreferrer">
+              LIVE PREVIEW ↗
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 4 -->
+      <article class="project-card reveal">
+        <div class="project-image">
+          <div class="project-placeholder">
+            <span>E-COMMERCE</span>
+            <strong>ELITE<br>GADGETS.</strong>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <div class="project-index">PROJECT / 004</div>
+          <h3>Elite Gadgets</h3>
+          <p>
+            An e-commerce website project focused on
+            showcasing electronics and accessories through
+            a structured storefront, product presentation
+            and shopping experience.
+          </p>
+          <div class="project-tags">
+            <span>HTML</span><span>CSS</span>
+            <span>JAVASCRIPT</span><span>SUPABASE</span>
+          </div>
+          <div class="project-links">
+            <a href="#contact">PROJECT DETAILS ↗</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services-section" id="services">
+  <div class="container">
+    <div class="section-label reveal">04 / WHAT I BUILD</div>
+
+    <h2 class="section-title reveal">
+      YOUR IDEA. MY <span>EXPERTISE.</span>
+    </h2>
+
+    <p class="section-desc reveal">
+      Whether you're launching a new business or improving
+      an existing digital presence, I can help bring your
+      next project to life.
+    </p>
+
+    <div class="services-grid">
+
+      <article class="service reveal">
+        <span class="service-num">01 / DEVELOPMENT</span>
+        <span class="service-arrow">↗</span>
+        <h3>Full-Stack Web Development</h3>
+        <p>
+          Custom web solutions combining responsive
+          frontend interfaces, backend functionality
+          and database integrations.
+        </p>
+      </article>
+
+      <article class="service reveal">
+        <span class="service-num">02 / BUSINESS</span>
+        <span class="service-arrow">↗</span>
+        <h3>Business Websites</h3>
+        <p>
+          Professional websites that communicate your
+          value, establish credibility and guide visitors
+          towards becoming customers.
+        </p>
+      </article>
+
+      <article class="service reveal">
+        <span class="service-num">03 / E-COMMERCE</span>
+        <span class="service-arrow">↗</span>
+        <h3>E-commerce Development</h3>
+        <p>
+          Engaging online stores with structured product
+          experiences, intuitive navigation and
+          customer-friendly shopping functionality.
+        </p>
+      </article>
+
+      <article class="service reveal">
+        <span class="service-num">04 / OPTIMIZATION</span>
+        <span class="service-arrow">↗</span>
+        <h3>Website Redesign & Optimization</h3>
+        <p>
+          Transform outdated websites into modern,
+          responsive and more effective digital
+          experiences.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="section-label reveal">05 / HOW I WORK</div>
+    <h2 class="section-title reveal">
+      FROM FIRST IDEA <span>TO LAUNCH.</span>
+    </h2>
+    <p class="section-desc reveal">
+      A clear and collaborative development process
+      keeps your project organized, purposeful
+      and moving forward.
+    </p>
+
+    <div class="process-grid">
+
+      <div class="process-item reveal">
+        <span>01</span>
+        <h3>Discover</h3>
+        <p>Understand your business, goals, audience
+        and project requirements.</p>
+      </div>
+
+      <div class="process-item reveal">
+        <span>02</span>
+        <h3>Strategize</h3>
+        <p>Define the structure, features and
+        direction of your solution.</p>
+      </div>
+
+      <div class="process-item reveal">
+        <span>03</span>
+        <h3>Design</h3>
+        <p>Create an engaging visual experience
+        that reflects your brand.</p>
+      </div>
+
+      <div class="process-item reveal">
+        <span>04</span>
+        <h3>Develop</h3>
+        <p>Build, integrate and test the website
+        across different devices.</p>
+      </div>
+
+      <div class="process-item reveal">
+        <span>05</span>
+        <h3>Deploy</h3>
+        <p>Prepare the website for launch and
+        deliver the completed project.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonial-section" id="testimonials">
+  <div class="container">
+    <div class="section-label reveal">06 / CLIENT EXPERIENCES</div>
+    <h2 class="section-title reveal">
+      WORDS THAT <span>MATTER.</span>
+    </h2>
+    <p class="section-desc reveal">
+      Trust is built through communication, quality
+      and the experience of working together.
+    </p>
+
+    <div class="testimonial-shell reveal">
+
+      <div id="testimonialSlides">
+
+        <article class="testimonial active">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "The attention to detail and overall approach
+            to the project made the experience feel
+            professional from beginning to end."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=12" alt="Illustrative profile avatar">
+            <div><h4>Daniel Morgan</h4><p>Business Owner · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "The website concept was exactly the kind of
+            modern presentation I wanted. Clean visuals,
+            thoughtful layout and a strong user experience."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=47" alt="Illustrative profile avatar">
+            <div><h4>Sarah Mitchell</h4><p>Entrepreneur · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">
+            "Communication and attention to the requirements
+            made the development process straightforward.
+            The final concept felt polished."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=11" alt="Illustrative profile avatar">
+            <div><h4>Michael Carter</h4><p>Consultant · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "I appreciated the creative thinking behind
+            the design. It wasn't just about appearance;
+            the structure made the website easy to explore."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=44" alt="Illustrative profile avatar">
+            <div><h4>Olivia Bennett</h4><p>Creative Founder · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "The overall experience was organized and
+            professional. I particularly liked how the
+            design brought the business identity together."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=68" alt="Illustrative profile avatar">
+            <div><h4>James Anderson</h4><p>Business Owner · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">
+            "A thoughtful approach to website development.
+            The layout, visual presentation and mobile
+            experience were important highlights."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=5" alt="Illustrative profile avatar">
+            <div><h4>Emma Wilson</h4><p>Marketing Professional · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "The project demonstrated a good balance
+            between creativity and functionality.
+            The result felt modern and purposeful."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=15" alt="Illustrative profile avatar">
+            <div><h4>Ryan Thompson</h4><p>Founder · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "I liked the way the project was approached.
+            The design felt intentional and the
+            communication was clear throughout."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=32" alt="Illustrative profile avatar">
+            <div><h4>Grace Robinson</h4><p>Entrepreneur · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">
+            "The visual direction was impressive.
+            I especially appreciated the effort to make
+            the website feel consistent across devices."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=60" alt="Illustrative profile avatar">
+            <div><h4>David Harris</h4><p>Consultant · Sample profile</p></div>
+          </div>
+        </article>
+
+        <article class="testimonial">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            "A creative and detail-oriented approach.
+            The finished concept communicated the
+            brand much more clearly than before."
+          </p>
+          <div class="review-person">
+            <img src="https://i.pravatar.cc/120?img=49" alt="Illustrative profile avatar">
+            <div><h4>Victoria Lewis</h4><p>Business Owner · Sample profile</p></div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="review-controls">
+        <div class="review-count">
+          <span id="reviewCurrent">01</span> / 10
+        </div>
+        <div class="review-arrows">
+          <button class="arrow-btn" id="reviewPrev" aria-label="Previous testimonial">←</button>
+          <button class="arrow-btn" id="reviewNext" aria-label="Next testimonial">→</button>
+        </div>
+      </div>
+
+      <div class="review-dots" id="reviewDots"></div>
+
+      <p class="review-note">
+        Illustrative sample testimonials for layout demonstration.
+        These are not verified customer reviews. Replace with
+        genuine client feedback before publishing.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" id="faq">
+  <div class="container">
+    <div class="section-label reveal">07 / GOT QUESTIONS?</div>
+    <h2 class="section-title reveal">
+      LET'S CLEAR <span>THINGS UP.</span>
+    </h2>
+
+    <div class="faq-layout">
+      <div class="faq-side reveal">
+        <h3>Good projects start with clear conversations.</h3>
+        <p>
+          Have questions about pricing, timelines or
+          what working together looks like? Here are
+          answers to some common questions.
+        </p>
+        <a href="#contact" class="btn btn-outline" style="margin-top:25px">
+          ASK ME DIRECTLY ↗
+        </a>
+      </div>
+
+      <div class="faq-card reveal">
+        <div class="faq-counter" id="faqCounter">QUESTION 01 / 10</div>
+        <h3 class="faq-question" id="faqQuestion">
+          How much does it cost to build a website?
+        </h3>
+        <p class="faq-answer" id="faqAnswer">
+          Pricing depends on your goals, website complexity,
+          required features and integrations. After
+          understanding your requirements, I'll provide
+          a tailored quotation with a clear project scope.
+        </p>
+
+        <div class="faq-controls">
+          <button id="faqPrev">← PREVIOUS</button>
+          <button id="faqNext">NEXT QUESTION →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container reveal">
+    <div class="section-label" style="justify-content:center">
+      08 / LET'S CREATE
+    </div>
+
+    <h2>
+      HAVE AN IDEA?<br>
+      <span>LET'S MAKE IT REAL.</span>
+    </h2>
+
+    <p>
+      Whether you need a professional business website,
+      a complete web application or a better digital
+      experience, let's talk about what you're building.
+    </p>
+
+    <a href="https://wa.me/2348168651231?text=Hello%20Fofana%2C%20I%20visited%20your%20portfolio%20and%20I%27m%20interested%20in%20discussing%20a%20website%20project."
+       target="_blank" rel="noopener noreferrer"
+       class="btn btn-primary magnetic">
+      DISCUSS YOUR PROJECT ↗
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <h2>FOFANA<span>.</span></h2>
+        <p>
+          Building digital experiences that combine
+          creativity, technology and purposeful design.
+          Let's turn your next idea into something real.
+        </p>
+      </div>
+
+      <div class="footer-contact">
+        <div>
+          <small>EMAIL ME</small>
+          <a href="mailto:elitewebpro001@gmail.com">
+            elitewebpro001@gmail.com
+          </a>
+        </div>
+
+        <div>
+          <small>WHATSAPP</small>
+          <a href="https://wa.me/2348168651231"
+             target="_blank" rel="noopener noreferrer">
+            +234 816 865 1231 ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 FOFANA. ALL RIGHTS RESERVED.</span>
+
+      <div class="footer-socials">
+        <a href="https://github.com/fofanaumar73-ai"
+           target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+        <a href="mailto:elitewebpro001@gmail.com">EMAIL ↗</a>
+        <a href="#home">BACK TO TOP ↑</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a class="whatsapp-float"
+   href="https://wa.me/2348168651231?text=Hello%20Fofana%2C%20I%27m%20interested%20in%20your%20web%20development%20services."
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Chat with Fofana on WhatsApp">
+
+  <span class="whatsapp-tip">LET'S DISCUSS YOUR PROJECT</span>
+
+  <!-- WhatsApp logo silhouette -->
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path d="M16.02 3C8.85 3 3.02 8.82 3.02 15.99c0 2.29.6 4.53 1.74 6.5L3 29l6.67-1.75a13 13 0 0 0 6.35 1.65h.01c7.17 0 13-5.83 13-13S23.2 3 16.02 3zm0 23.72h-.01a10.7 10.7 0 0 1-5.45-1.49l-.39-.23-3.96 1.04 1.06-3.86-.25-.4a10.7 10.7 0 0 1-1.64-5.79c0-5.88 4.78-10.66 10.66-10.66 2.85 0 5.53 1.11 7.54 3.12a10.6 10.6 0 0 1 3.12 7.55c0 5.88-4.79 10.72-10.68 10.72zm5.86-8.02c-.32-.16-1.88-.93-2.17-1.04-.29-.11-.5-.16-.7.16-.21.32-.81 1.04-.99 1.25-.18.21-.36.24-.68.08-.32-.16-1.35-.5-2.57-1.6-.95-.84-1.59-1.88-1.77-2.2-.18-.32-.02-.49.14-.65.15-.14.32-.36.48-.54.16-.18.21-.31.32-.52.11-.21.05-.4-.03-.56-.08-.16-.7-1.68-.96-2.3-.25-.6-.51-.52-.7-.53h-.6c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.61 0 1.54 1.12 3.02 1.28 3.23.16.21 2.21 3.37 5.36 4.72.75.32 1.34.51 1.8.65.76.24 1.45.2 2 .12.61-.09 1.88-.77 2.15-1.52.27-.75.27-1.39.19-1.52-.08-.14-.29-.22-.61-.38z"/>
+  </svg>
+</a>
+
+<script>
+// ==========================================
+// 1. PRELOADER
+// ==========================================
+
+const loaderBar = document.getElementById("loaderBar");
+const loaderNumber = document.getElementById("loaderNumber");
+const preloader = document.getElementById("preloader");
+
+let progress = 0;
+
+const loaderInterval = setInterval(() => {
+  progress += Math.floor(Math.random() * 8) + 2;
+
+  if(progress >= 100) {
+    progress = 100;
+    clearInterval(loaderInterval);
+  }
+
+  loaderBar.style.width = progress + "%";
+  loaderNumber.textContent = String(progress).padStart(2,"0");
+
+  if(progress === 100) {
+    setTimeout(() => {
+      preloader.style.transition = "opacity .8s ease";
+      preloader.style.opacity = "0";
+
+      setTimeout(() => {
+        preloader.style.display = "none";
+        document.body.classList.remove("loading");
+        startHeroAnimations();
+      },800);
+
+    },350);
+  }
+},65);
+
+
+// ==========================================
+// 2. NAVIGATION
+// ==========================================
+
+const navbar = document.getElementById("navbar");
+const mobileMenu = document.getElementById("mobileMenu");
+
+window.addEventListener("scroll",() => {
+  navbar.classList.toggle("scrolled",window.scrollY > 40);
+},{passive:true});
+
+document.getElementById("menuToggle").addEventListener("click",() => {
+  mobileMenu.classList.add("open");
+});
+
+document.getElementById("mobileClose").addEventListener("click",() => {
+  mobileMenu.classList.remove("open");
+});
+
+document.querySelectorAll(".mobile-menu a").forEach(link => {
+  link.addEventListener("click",() => {
+    mobileMenu.classList.remove("open");
+  });
+});
+
+
+// ==========================================
+// 3. MAGNETIC BUBBLE CURSOR
+// ==========================================
+
+const cursorDot = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
+
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+let lastBubble = 0;
+let cursorFrame = null;
+
+const finePointer = window.matchMedia("(pointer:fine)").matches;
+
+if(finePointer) {
+
+  window.addEventListener("mousemove",e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    cursorDot.style.left = mouseX + "px";
+    cursorDot.style.top = mouseY + "px";
+
+    const now = performance.now();
+
+    if(now - lastBubble > 65) {
+      createBubble(mouseX,mouseY,Math.random()*13+5);
+      lastBubble = now;
+    }
+  },{passive:true});
+
+  function animateCursor() {
+    ringX += (mouseX-ringX)*.15;
+    ringY += (mouseY-ringY)*.15;
+
+    cursorRing.style.left = ringX + "px";
+    cursorRing.style.top = ringY + "px";
+
+    cursorFrame = requestAnimationFrame(animateCursor);
+  }
+
+  animateCursor();
+
+  document.querySelectorAll("a,button,.magnetic,.skill-card,.project-card,.service")
+  .forEach(el => {
+    el.addEventListener("mouseenter",() => {
+      cursorRing.classList.add("active");
+    });
+    el.addEventListener("mouseleave",() => {
+      cursorRing.classList.remove("active");
+    });
+  });
+
+  document.addEventListener("click",e => {
+    for(let i=0;i<5;i++) {
+      createBubble(
+        e.clientX+(Math.random()-0.5)*35,
+        e.clientY+(Math.random()-0.5)*35,
+        Math.random()*17+7
+      );
+    }
+  });
+
+}
+
+function createBubble(x,y,size) {
+  if(document.hidden || document.body.classList.contains("loading")) return;
+
+  const bubble = document.createElement("div");
+  bubble.className = "cursor-bubble";
+  bubble.style.left = x + "px";
+  bubble.style.top = y + "px";
+  bubble.style.setProperty("--size",size+"px");
+
+  document.body.appendChild(bubble);
+  setTimeout(() => bubble.remove(),750);
+}
+
+
+// ==========================================
+// 4. MOBILE TOUCH BUBBLES
+// ==========================================
+
+let lastTouchBubble = 0;
+
+window.addEventListener("touchmove",e => {
+  const touch = e.touches[0];
+  if(!touch) return;
+
+  const now = performance.now();
+
+  if(now-lastTouchBubble > 110) {
+    createBubble(
+      touch.clientX,
+      touch.clientY,
+      Math.random()*15+7
+    );
+    lastTouchBubble = now;
+  }
+},{passive:true});
+
+window.addEventListener("touchstart",e => {
+  const touch = e.touches[0];
+  if(!touch) return;
+
+  for(let i=0;i<3;i++) {
+    createBubble(
+      touch.clientX+(Math.random()-0.5)*20,
+      touch.clientY+(Math.random()-0.5)*20,
+      Math.random()*15+7
+    );
+  }
+},{passive:true});
+
+
+// ==========================================
+// 5. MAGNETIC BUTTONS
+// ==========================================
+
+if(finePointer) {
+  document.querySelectorAll(".magnetic").forEach(button => {
+
+    button.addEventListener("mousemove",e => {
+      const rect = button.getBoundingClientRect();
+      const x = e.clientX-rect.left-rect.width/2;
+      const y = e.clientY-rect.top-rect.height/2;
+
+      button.style.transform =
+        `translate(${x*.12}px,${y*.12}px)`;
+    });
+
+    button.addEventListener("mouseleave",() => {
+      button.style.transform = "";
+    });
+
+  });
+}
+
+
+// ==========================================
+// 6. HERO ORB INTERACTION
+// ==========================================
+
+const heroVisual = document.getElementById("heroVisual");
+const liquidOrb = document.getElementById("liquidOrb");
+
+if(finePointer) {
+  heroVisual.addEventListener("mousemove",e => {
+    const rect = heroVisual.getBoundingClientRect();
+    const x = (e.clientX-rect.left)/rect.width-.5;
+    const y = (e.clientY-rect.top)/rect.height-.5;
+
+    liquidOrb.style.transform =
+      `translate(${x*20}px,${y*20}px) rotateY(${x*18}deg) rotateX(${-y*18}deg)`;
+  });
+
+  heroVisual.addEventListener("mouseleave",() => {
+    liquidOrb.style.transform = "";
+  });
+}
+
+
+// ==========================================
+// 7. SCROLL REVEALS
+// ==========================================
+
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll(".reveal").forEach(el => {
+  revealObserver.observe(el);
+});
+
+
+// ==========================================
+// 8. HERO GSAP ANIMATIONS
+// ==========================================
+
+function startHeroAnimations() {
+  if(!window.gsap || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  gsap.from(".hero-kicker",{
+    y:25,opacity:0,duration:.8
+  });
+
+  gsap.from(".hero h1",{
+    y:90,opacity:0,duration:1.2,delay:.15,ease:"power4.out"
+  });
+
+  gsap.from(".hero-subtitle,.hero-description,.hero-buttons",{
+    y:30,opacity:0,duration:.9,stagger:.15,delay:.5
+  });
+
+  gsap.from(".hero-visual",{
+    scale:.75,opacity:0,duration:1.4,delay:.25,ease:"power3.out"
+  });
+}
+
+
+// ==========================================
+// 9. TESTIMONIAL SLIDER
+// ==========================================
+
+const reviews = [...document.querySelectorAll(".testimonial")];
+const reviewCurrent = document.getElementById("reviewCurrent");
+const reviewDots = document.getElementById("reviewDots");
+
+let reviewIndex = 0;
+let reviewTimer;
+let reviewPaused = false;
+
+reviews.forEach((_,i) => {
+  const dot = document.createElement("button");
+  dot.className = "review-dot";
+  dot.setAttribute("aria-label","Show testimonial "+(i+1));
+  dot.addEventListener("click",() => {
+    showReview(i);
+    restartReviewTimer();
+  });
+  reviewDots.appendChild(dot);
+});
+
+const dots = [...reviewDots.children];
+
+function showReview(index) {
+  reviewIndex = (index+reviews.length)%reviews.length;
+
+  reviews.forEach((review,i) => {
+    review.classList.toggle("active",i===reviewIndex);
+  });
+
+  dots.forEach((dot,i) => {
+    dot.classList.toggle("active",i===reviewIndex);
+  });
+
+  reviewCurrent.textContent =
+    String(reviewIndex+1).padStart(2,"0");
+}
+
+function nextReview() {
+  showReview(reviewIndex+1);
+}
+
+function previousReview() {
+  showReview(reviewIndex-1);
+}
+
+function startReviewTimer() {
+  clearInterval(reviewTimer);
+  reviewTimer = setInterval(() => {
+    if(!reviewPaused) nextReview();
+  },5000);
+}
+
+function restartReviewTimer() {
+  startReviewTimer();
+}
+
+document.getElementById("reviewNext").addEventListener("click",() => {
+  nextReview();
+  restartReviewTimer();
+});
+
+document.getElementById("reviewPrev").addEventListener("click",() => {
+  previousReview();
+  restartReviewTimer();
+});
+
+const reviewShell = document.querySelector(".testimonial-shell");
+
+reviewShell.addEventListener("mouseenter",() => {
+  reviewPaused = true;
+});
+reviewShell.addEventListener("mouseleave",() => {
+  reviewPaused = false;
+});
+
+reviewShell.addEventListener("focusin",() => {
+  reviewPaused = true;
+});
+reviewShell.addEventListener("focusout",() => {
+  reviewPaused = false;
+});
+
+
+// Swipe support for testimonials
+
+let reviewTouchStart = 0;
+
+reviewShell.addEventListener("touchstart",e => {
+  reviewTouchStart = e.changedTouches[0].screenX;
+},{passive:true});
+
+reviewShell.addEventListener("touchend",e => {
+  const end = e.changedTouches[0].screenX;
+  const difference = end-reviewTouchStart;
+
+  if(Math.abs(difference)>50) {
+    difference<0 ? nextReview() : previousReview();
+    restartReviewTimer();
+  }
+},{passive:true});
+
+showReview(0);
+startReviewTimer();
+
+
+// ==========================================
+// 10. FAQ SLIDER
+// ==========================================
+
+const faqData = [
+  {
+    q:"How much does it cost to build a website?",
+    a:"Pricing depends on your goals, website complexity, required features and integrations. After understanding your requirements, I'll provide a tailored quotation with a clear project scope."
+  },
+  {
+    q:"How long does website development take?",
+    a:"Timelines depend on the size and complexity of the project. A straightforward business website usually takes less time than a complex web application or e-commerce platform. We'll agree on a realistic timeline before development begins."
+  },
+  {
+    q:"Will my website work on mobile devices?",
+    a:"Absolutely. Responsive design is part of the development process. Your website will be designed and tested for desktop, tablet and mobile experiences."
+  },
+  {
+    q:"Can you redesign my existing website?",
+    a:"Yes. I can help modernize your existing website, improve its layout, update its visual identity and refine the overall user experience while considering your business goals."
+  },
+  {
+    q:"Do you build e-commerce websites?",
+    a:"Yes. I work on e-commerce experiences, including storefront design, product presentation, shopping functionality and integrations appropriate to your business."
+  },
+  {
+    q:"Will I be able to update my website?",
+    a:"Yes. Depending on the project, I can structure the website so that future content and link updates can be handled through clearly organized code or an agreed content management solution."
+  },
+  {
+    q:"Do you provide website maintenance?",
+    a:"Maintenance arrangements can be discussed based on your website and ongoing needs. This may include updates, troubleshooting, improvements and technical support."
+  },
+  {
+    q:"Can you integrate third-party tools and APIs?",
+    a:"Yes. I can work with suitable APIs and third-party services to connect your website with the tools and functionality your business needs."
+  },
+  {
+    q:"What do you need from me before starting?",
+    a:"A clear understanding of your business, your goals, preferred features and any available branding materials or content is a great starting point. I'll guide you through the requirements."
+  },
+  {
+    q:"How do I get started with a project?",
+    a:"Simply contact me through WhatsApp or email. Tell me about your business and what you want to build. We'll discuss the requirements, project scope, timeline and quotation."
+  }
+];
+
+let faqIndex = 0;
+
+const faqQuestion = document.getElementById("faqQuestion");
+const faqAnswer = document.getElementById("faqAnswer");
+const faqCounter = document.getElementById("faqCounter");
+const faqPrev = document.getElementById("faqPrev");
+const faqNext = document.getElementById("faqNext");
+
+function showFaq(index) {
+  faqIndex = Math.max(0,Math.min(index,faqData.length-1));
+
+  faqQuestion.textContent = faqData[faqIndex].q;
+  faqAnswer.textContent = faqData[faqIndex].a;
+
+  faqCounter.textContent =
+    `QUESTION ${String(faqIndex+1).padStart(2,"0")} / ${faqData.length}`;
+
+  faqPrev.disabled = faqIndex===0;
+  faqNext.disabled = faqIndex===faqData.length-1;
+
+  faqQuestion.animate(
+    [
+      {opacity:0,transform:"translateY(12px)"},
+      {opacity:1,transform:"translateY(0)"}
+    ],
+    {duration:350,easing:"ease-out"}
+  );
+
+  faqAnswer.animate(
+    [
+      {opacity:0,transform:"translateY(10px)"},
+      {opacity:1,transform:"translateY(0)"}
+    ],
+    {duration:400,easing:"ease-out"}
+  );
+}
+
+faqPrev.addEventListener("click",() => showFaq(faqIndex-1));
+faqNext.addEventListener("click",() => showFaq(faqIndex+1));
+
+showFaq(0);
+
+
+// ==========================================
+// 11. KEYBOARD ACCESSIBILITY
+// ==========================================
+
+document.addEventListener("keydown",e => {
+  if(e.key==="Escape") {
+    mobileMenu.classList.remove("open");
+  }
+});
+
+
+// ==========================================
+// 12. CLEANUP
+// ==========================================
+
+document.addEventListener("visibilitychange",() => {
+  if(document.hidden) {
+    reviewPaused = true;
+  } else {
+    reviewPaused = false;
+  }
+});
+</script>
+
+</body>
+</html>
