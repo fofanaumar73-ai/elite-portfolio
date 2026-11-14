@@ -1501,6 +1501,62 @@ img {max-width:100%;display:block}
 }
 
 
+/* ABOUT SECTION — PROFILE PORTRAIT */
+
+.about-visual {
+  position: relative;
+  min-height: 430px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  display: block;
+  background: #15151D;
+  border: 1px solid rgba(150, 107, 255, 0.35);
+  box-shadow: 0 20px 65px rgba(150, 107, 255, 0.10);
+}
+
+.about-visual::before {
+  content: none;
+}
+
+.about-visual .about-symbol {
+  display: none;
+}
+
+.about-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.about-visual:hover .about-portrait {
+  transform: scale(1.035);
+}
+
+.about-stamp {
+  position: absolute;
+  z-index: 2;
+  bottom: 18px;
+  left: 18px;
+  padding: 12px 15px;
+  background: rgba(21, 21, 29, 0.82);
+  border: 1px solid rgba(150, 107, 255, 0.4);
+  color: #C4A8FF;
+  backdrop-filter: blur(12px);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+@media(max-width: 600px) {
+  .about-visual {
+    min-height: 350px;
+  }
+}
+
 
 </style>
 </head>
