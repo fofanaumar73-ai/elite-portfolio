@@ -1368,6 +1368,139 @@ img {max-width:100%;display:block}
               inset -15px -15px 30px #000 !important;
 }
 
+    
+/* ===================================
+   PROJECTS — ASYMMETRICAL SHOWCASE
+=================================== */
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 55px;
+}
+
+/* Featured project */
+.project-card:first-child {
+  grid-column: span 12;
+  grid-template-columns: 1.3fr .7fr;
+  min-height: 460px;
+  background: linear-gradient(135deg, #242033, #1E1D29);
+  border-color: rgba(150,107,255,.3);
+}
+
+.project-card:first-child .project-image {
+  min-height: 440px;
+}
+
+.project-card:first-child .project-content {
+  padding: 45px;
+}
+
+/* Supporting projects */
+.project-card:nth-child(n+2) {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  min-height: 440px;
+  background: #1E1D29;
+}
+
+.project-card:nth-child(n+2) .project-image {
+  min-height: 230px;
+  width: 100%;
+}
+
+.project-card:nth-child(n+2) .project-content {
+  padding: 27px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.project-card:nth-child(n+2) .project-content h3 {
+  font-size: 25px;
+}
+
+.project-card:nth-child(n+2) .project-content p {
+  font-size: 12px;
+}
+
+.project-card:nth-child(n+2) .project-tags {
+  margin: 18px 0;
+}
+
+/* Tablet */
+@media(max-width: 900px) {
+  .project-card:first-child {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card:first-child .project-image {
+    min-height: 320px;
+  }
+
+  .project-card:nth-child(n+2) {
+    grid-column: span 6;
+  }
+}
+
+/* Mobile */
+@media(max-width: 600px) {
+  .project-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .project-card:first-child,
+  .project-card:nth-child(n+2) {
+    grid-column: span 1;
+  }
+
+  .project-card:first-child .project-image {
+    min-height: 250px;
+  }
+
+  .project-card:first-child .project-content {
+    padding: 27px 22px;
+  }
+
+  .project-card:nth-child(n+2) .project-image {
+    min-height: 220px;
+  }
+}
+
+/* ===================================
+   SERVICES — PLATFORM SHOWCASE
+=================================== */
+
+.services-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.service {
+  background: linear-gradient(145deg, #29243B, #1E1D29);
+  border-color: rgba(196,168,255,.12);
+}
+
+.service:hover {
+  border-color: #966BFF;
+  box-shadow: 0 15px 40px rgba(150,107,255,.08);
+}
+
+@media(max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 600px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 
 </style>
 </head>
